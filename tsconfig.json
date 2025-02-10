@@ -1,0 +1,84 @@
+{
+  "compilerOptions": {
+    /**
+     * Target JavaScript version
+     * - "ESNext" enables the latest ECMAScript features.
+     * - Ensures better performance and compatibility with modern browsers.
+     */
+    "target": "ESNext",
+
+    /**
+     * Module system for output
+     * - "ESNext" generates ES module imports/exports.
+     * - Ensures compatibility with modern bundlers like Rollup and Webpack.
+     */
+    "module": "ESNext",
+
+    /**
+     * Specifies where the compiled JavaScript files should be stored.
+     * - "dist" ensures all compiled output is stored in the "dist" directory.
+     */
+    "outDir": "dist",
+
+    /**
+     * Enables declaration file generation (.d.ts)
+     * - Useful for TypeScript users who import this SDK.
+     */
+    "declaration": true,
+
+    /**
+     * Generates source maps (.map files)
+     * - Helps with debugging by mapping compiled JS back to TypeScript.
+     */
+    "sourceMap": true,
+
+    /**
+     * Removes all comments in the compiled JavaScript files.
+     * - Helps reduce file size in production builds.
+     */
+    "removeComments": true,
+
+    /**
+     * Strict TypeScript settings
+     * - Enables strict type-checking rules for better type safety.
+     */
+    "strict": true,
+
+    /**
+     * Controls how module resolution works.
+     * - "Node" mimics Node.js module resolution logic.
+     * - Ensures compatibility with npm packages.
+     */
+    "moduleResolution": "Node",
+
+    /**
+     * Allows importing JSON files as ES modules.
+     * - Required for handling configuration files in JSON format.
+     */
+    "resolveJsonModule": true,
+
+    /**
+     * Enables interoperability with CommonJS modules.
+     * - Required for using libraries that export CommonJS modules.
+     */
+    "esModuleInterop": true,
+
+    /**
+     * Prevents TypeScript from checking declaration files (.d.ts).
+     * - Speeds up compilation.
+     */
+    "skipLibCheck": true
+  },
+
+  /**
+   * Specifies which files should be included in compilation.
+   * - Includes all TypeScript files inside the "src" directory.
+   */
+  "include": ["src/**/*"],
+
+  /**
+   * Specifies which files should be excluded from compilation.
+   * - Excludes test files, node_modules, and the output directory.
+   */
+  "exclude": ["tests", "node_modules", "dist"]
+}
