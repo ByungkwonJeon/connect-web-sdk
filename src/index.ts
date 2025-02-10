@@ -8,13 +8,44 @@ import { openPopup } from './popupHandler';
 import { initPostMessage } from './messageHandler';
 import { defaultEventHandlers } from './eventHandlers';
 
-export interface ConnectEventHandlers {
-    onDone: (event: any) => void;
-    onCancel: (event: any) => void;
-    onError: (event: any) => void;
-    onRoute?: (event: any) => void;
-    onUser?: (event: any) => void;
-    onLoad?: () => void;
+export interface GlobalConnectHandlers {
+    onSuccess: (event: GlobalConnectSuccessEvent) => void;
+    onCancel: (event: GlobalConnectCancelEvent) => void;
+    onFailed: (event: GlobalConnectFailedEvent) => void;
+    onAbandoned: (event: GlobalConnectAbandonedEvent) => void;
+    onLinkExpired: (event: GlobalConnectLinkExpiredEvent) => void;
+    onLoad?: (event: any) => void;
+}
+
+export interface GlobalConnectSuccessEvent {
+    accountId: string;
+    consentId: string;
+    linkId: string;
+    bankName?: string;
+    last4AccountNumber?: string;
+    accountBalance?: string;
+    bankLogo?: string;
+    accountType?: string;
+}
+
+export interface GlobalConnectCancelEvent {
+    code: string;
+    message: string;
+}
+
+export interface GlobalConnectFailedEvent {
+    code: string;
+    message: string;
+}
+
+export interface GlobalConnectAbandonedEvent {
+    code: string;
+    message: string;
+}
+
+export interface GlobalConnectLinkExpiredEvent {
+    code: string;
+    message: string;
 }
 
 export interface ConnectOptions {
@@ -28,20 +59,20 @@ export const Connect = {
      * @param eventHandlers Event handlers for session lifecycle.
      * @param options Configuration options for iframe or popup mode.
      */
-    launch(url: string, eventHandlers: ConnectEventHandlers, options: ConnectOptions = {}) {
+    launch(url: string, eventHandlers: GlobalConnectHandlers, options: ConnectOptions = {}) {
         const handlers = { ...defaultEventHandlers, ...eventHandlers };
 
         if (options.popup) {
             const popup = openPopup(url);
             if (!popup) {
-                handlers.onError({ message: 'Popup blocked' });
+                handlers.onFailed({ code: '20001', message: 'Popup blocked' });
             } else {
                 const intervalId = initPostMessage(popup, options);
                 popup.onbeforeunload = () => clearInterval(intervalId);
             }
         } else {
             destroyIframe();
-            createIframe(url, options, handlers.onLoad || (() => {}));
+            createIframe(url, options, () => handlers.onLoad?.({}));
         }
     },
 

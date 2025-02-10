@@ -3,13 +3,20 @@
  * Provides default empty event handlers for safe execution.
  */
 
-import { ConnectEventHandlers } from './index';
+import {
+    GlobalConnectAbandonedEvent,
+    GlobalConnectCancelEvent,
+    GlobalConnectFailedEvent,
+    GlobalConnectHandlers, GlobalConnectLinkExpiredEvent,
+    GlobalConnectSuccessEvent
+} from './index';
 
-export const defaultEventHandlers: ConnectEventHandlers = {
+export const defaultEventHandlers: GlobalConnectHandlers = {
+    onSuccess: (event: GlobalConnectSuccessEvent) => {},
+    onCancel: (event: GlobalConnectCancelEvent) => {},
+    onFailed: (event: GlobalConnectFailedEvent) => {},
+    onAbandoned: (event: GlobalConnectAbandonedEvent) => {},
+    onLinkExpired: (event: GlobalConnectLinkExpiredEvent) => {},
     onLoad: () => {},
-    onUser: () => {},
-    onRoute: () => {},
-    onDone: () => {},
-    onCancel: () => {},
-    onError: () => {},
+    // onRoute: () => {},
 };
