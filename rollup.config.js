@@ -18,19 +18,26 @@ export default {
     // Output configurations
     output: [
         {
-            file: 'dist/index.esm.js', // ES Module output
+            file: 'dist/connect.esm.js', // ES Module output
             format: 'esm', // ECMAScript module format
             sourcemap: true // Enable source maps for debugging
         },
         {
-            file: 'dist/index.cjs.js', // CommonJS output
+            file: 'dist/connect.cjs.js', // CommonJS output
             format: 'cjs', // CommonJS format for Node.js
             sourcemap: true
         },
         {
-            file: 'dist/index.umd.js', // UMD output (Universal Module Definition)
+            file: 'dist/connect.umd.js', // UMD output (Universal Module Definition)
             format: 'umd',
             name: 'ConnectSDK', // Global variable name when loaded in a browser
+            sourcemap: true
+        },
+        {
+            file: 'dist/connect.min.js',
+            format: 'umd',
+            name: 'ConnectSDK', // Global variable name when loaded in a browser
+            plugins: [terser()], // Minifies the output
             sourcemap: true
         }
     ],
