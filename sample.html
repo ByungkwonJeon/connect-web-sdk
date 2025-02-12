@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web SDK Test</title>
+  <script type="module">
+    import { Connect } from './dist/index.js'; // Ensure correct path to SDK
+    
+    Connect.launch('https://example.com', {
+      onDone: (event) => console.log('Session Completed:', event),
+      onCancel: () => console.log('User Canceled'),
+      onError: (event) => console.error('Error:', event),
+      onRoute: (event) => console.log('Navigated to:', event.screen),
+      onUser: (event) => console.log('User action:', event.action),
+      onLoad: () => console.log('SDK Loaded'),
+      onClose: () => console.log('SDK Closed'),
+    }, { popup: true });
+  </script>
+</head>
+<body>
+  <h1>Test Connect Web SDK</h1>
+  <button onclick="Connect.launch('https://example.com')">Launch SDK</button>
+</body>
+</html>
