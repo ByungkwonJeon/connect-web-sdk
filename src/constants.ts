@@ -15,8 +15,10 @@ export const CONNECT_POPUP_HEIGHT = 600;
 export const ACK_EVENT = 'ACK_EVENT';
 export const CANCEL_EVENT = 'CANCEL_EVENT';
 export const URL_EVENT = 'URL_EVENT';
-export const DONE_EVENT = 'DONE_EVENT';
-export const ERROR_EVENT = 'ERROR_EVENT';
+export const SUCCESS_EVENT = 'SUCCESS_EVENT';
+export const FAILED_EVENT = 'FAILED_EVENT';
+export const ABANDONED_EVENT = 'ABANDONED_EVENT';
+export const LINK_EXPIRED_EVENT = 'LINK_EXPIRED_EVENT';
 export const PING_EVENT = 'PING_EVENT';
 export const WINDOW_EVENT = 'WINDOW_EVENT';
 export const ROUTE_EVENT = 'ROUTE_EVENT';
@@ -29,3 +31,8 @@ export const PLATFORM_IFRAME = 'PLATFORM_IFRAME';
 
 // SDK version
 export const CONNECT_SDK_VERSION = '1.0.0';
+export enum POPUP_ACTION_TYPE {
+    OPEN = 'OPEN',
+    CLOSE = 'CLOSE',
+}
+

@@ -7,6 +7,8 @@ import { createIframe, destroyIframe } from './iframeHandler';
 import { openPopup } from './popupHandler';
 import { initPostMessage } from './messageHandler';
 import { defaultEventHandlers } from './eventHandlers';
+import {POPUP_ACTION_TYPE} from "./constants";
+import {destroySession} from "./destroy";
 
 export interface GlobalConnectHandlers {
     onSuccess: (event: GlobalConnectSuccessEvent) => void;
@@ -14,7 +16,8 @@ export interface GlobalConnectHandlers {
     onFailed: (event: GlobalConnectFailedEvent) => void;
     onAbandoned: (event: GlobalConnectAbandonedEvent) => void;
     onLinkExpired: (event: GlobalConnectLinkExpiredEvent) => void;
-    onLoad?: (event: any) => void;
+    onLoad?: () => void;
+    onUrl?: (type: POPUP_ACTION_TYPE, url?: string) => void;
 }
 
 export interface GlobalConnectSuccessEvent {
@@ -49,7 +52,19 @@ export interface GlobalConnectLinkExpiredEvent {
 }
 
 export interface ConnectOptions {
+    selector?: string;
+    node?: Node;
+    overlay?: string;
     popup?: boolean;
+    popupOptions?: PopupOptions;
+    redirectUrl?: string;
+}
+
+export interface PopupOptions {
+    width?: number;
+    height?: number;
+    top?: number;
+    left?: number;
 }
 
 export const Connect = {
@@ -61,25 +76,19 @@ export const Connect = {
      */
     launch(url: string, eventHandlers: GlobalConnectHandlers, options: ConnectOptions = {}) {
         const handlers = { ...defaultEventHandlers, ...eventHandlers };
-
+        const connectOrigin = new URL(url).origin;
+        destroySession();
         if (options.popup) {
             const popup = openPopup(url);
             if (!popup) {
                 handlers.onFailed({ code: '20001', message: 'Popup blocked' });
             } else {
-                const intervalId = initPostMessage(popup, options);
-                popup.onbeforeunload = () => clearInterval(intervalId);
+                initPostMessage(popup, options, connectOrigin, handlers);
+                handlers.onLoad && handlers.onLoad();
             }
         } else {
-            destroyIframe();
-            createIframe(url, options, () => handlers.onLoad?.({}));
+            createIframe(url, options, connectOrigin, handlers);
         }
     },
 
-    /**
-     * Destroys the active iframe or popup session.
-     */
-    destroy() {
-        destroyIframe();
-    },
 };
